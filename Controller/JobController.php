@@ -15,6 +15,14 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class JobController extends AbstractController
 {
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            // ...
+            'jms_job_queue.job_manager' => JobManager::class,
+        ]);
+    }
+
     /**
      * @Route("/", name = "jms_jobs_overview")
      */
