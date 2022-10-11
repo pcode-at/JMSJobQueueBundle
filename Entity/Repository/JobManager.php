@@ -25,11 +25,11 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use JMS\JobQueueBundle\Entity\Job;
 use JMS\JobQueueBundle\Event\StateChangeEvent;
 use JMS\JobQueueBundle\Retry\ExponentialRetryScheduler;
 use JMS\JobQueueBundle\Retry\RetryScheduler;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class JobManager
@@ -132,7 +132,7 @@ class JobManager
 
     public function findAllForRelatedEntity($relatedEntity)
     {
-        list($relClass, $relId) = $this->getRelatedEntityIdentifier($relatedEntity);
+        [$relClass, $relId] = $this->getRelatedEntityIdentifier($relatedEntity);
 
         $rsm = new ResultSetMappingBuilder($this->getJobManager());
         $rsm->addRootEntityFromClassMetadata('JMSJobQueueBundle:Job', 'j');
@@ -150,7 +150,7 @@ class JobManager
 
     public function findJobForRelatedEntity($command, $relatedEntity, array $states = array())
     {
-        list($relClass, $relId) = $this->getRelatedEntityIdentifier($relatedEntity);
+        [$relClass, $relId] = $this->getRelatedEntityIdentifier($relatedEntity);
 
         $rsm = new ResultSetMappingBuilder($this->getJobManager());
         $rsm->addRootEntityFromClassMetadata('JMSJobQueueBundle:Job', 'j');
